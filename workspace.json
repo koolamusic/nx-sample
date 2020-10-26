@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "projects": {
+    "gateway": {
+      "root": "apps/gateway",
+      "sourceRoot": "apps/gateway/src",
+      "projectType": "application",
+      "prefix": "gateway",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/gateway",
+            "main": "apps/gateway/src/main.ts",
+            "tsConfig": "apps/gateway/tsconfig.app.json",
+            "assets": ["apps/gateway/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/gateway/src/environments/environment.ts",
+                  "with": "apps/gateway/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "gateway:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/gateway/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/gateway/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/nest"
+  },
+  "defaultProject": "gateway"
+}
